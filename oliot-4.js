@@ -363,7 +363,6 @@ class Valid extends Pankki{
         }
     }
     talletaTarkista(tallete){
-        console.log("o");
         if(isNaN(tallete) == true){ // Jos sisältää kirjaimia
             document.getElementById("talleteIlmoite").innerHTML = "Virhe: Syötä vain numeroita"
             document.getElementById("formTallete").value = "";
@@ -373,7 +372,7 @@ class Valid extends Pankki{
                 document.getElementById("talleteIlmoite").innerHTML = "Virhe: Et voi nostaa miinuksella"
                 return false;
             }else{
-                if(tallete < -1){ // 90% varmuudella turha
+                if(tallete < -1){
                     document.getElementById("talleteIlmoite").innerHTML = "Syötä vain positiivisia lukuja"
                     return false;
                 } else {
@@ -385,8 +384,9 @@ class Valid extends Pankki{
                     }
                 }
             }
-        }
     }
+}
+
     nostaTarkista(){
 
     }
