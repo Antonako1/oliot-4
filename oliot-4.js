@@ -23,20 +23,7 @@ class Pankki {
         if(tilitehty == true){ // Jos tilinumero on annettu
             var ennenTallete = this.saldo; // Ottaa ennen talletusta olevan saldon
             var tallete = Number(document.getElementsByClassName("talletus")[0].value) // Ottaa Inputista arvot
-            if(isNaN(tallete) == true){ // Jos sisältää kirjaimia
-                document.getElementById("talleteIlmoite").innerHTML = "Virhe: Syötä vain numeroita"
-                document.getElementById("formTallete").value = "";
-
-            } else {
-                if(this.saldo + tallete <0){ // Katsoo meneekö miinukselle
-                    document.getElementById("talleteIlmoite").innerHTML = "Virhe: Et voi nostaa miinuksella"
-                }else{
-                    if(tallete < -1){
-                        document.getElementById("talleteIlmoite").innerHTML = "Syötä vain positiivisia lukuja"
-                    } else {
-                        if(tallete == 0){ // Jos ei talleta mitään
-                            document.getElementById("talleteIlmoite").innerHTML = "Et voi tallettaa 0€"
-                        } else{
+            if(this.talletaTarkista(tallete) == true)
                         this.saldo += tallete; // Saldoon lisätään tallete
                         document.getElementById("talleteIlmoite").innerHTML = "Talletit saldoosi " + tallete + "€"
                         this.historia.push(hankiAika() + ": Talletit " + tallete + "€" + ". Saldo ennen talletusta: "+ ennenTallete +"€. Saldo talletuksen jälkeen: " + this.saldo +"€"+"<br>")
@@ -48,57 +35,34 @@ class Pankki {
                             if(updating == true){
                                 this.naytaTiedot(); // Päivittää itse jos päällä
                             }
-                        }
-                    }
-                }
-            }
         } else { // Jos tilinumeroa ei ole annettu
             document.getElementById("tilitiedot").innerHTML = "Syötä tilinumerosi";
             document.getElementById("formTallete").value = "";
         }
     }
+    talletaTarkista(){}
     nosta() {
     if(tilitehty == true){ // Jos tilinumero on annettu
         var nosto = Number(document.getElementsByClassName("nosto")[0].value) // Ottaa inputista arvon
-        if(isNaN(nosto) == true){ // Jos sisältää kirjaimia
-            document.getElementById("nostoIlmoite").innerHTML = "Virhe: Syötä vain numeroita"
-            document.getElementById("formNosto").value = ""; // Tyhjentää input kentän
-        }else {
-            if(this.saldo + nosto <0 || nosto < -1){ // Katsoo meneekö miinukselle
-                document.getElementById("nostoIlmoite").innerHTML = "Virhe: Et voi nostaa miinuksella"
-            } else {
-                if(this.saldo == 0){ // Jos yrität nostaa ja saldo == 0, et voi
-                    document.getElementById("nostoIlmoite").innerHTML = "Virhe: Saldosi on tyhjä"
-                } else {
-                    var ennenNosto = this.saldo; // Ottaa ennen nostoa olevan saldoluvun
-                    if(this.saldo - nosto <= -1){ // Jos saldo-nosto on -1 tai alle, tulee virheilmoitus
-                        document.getElementById("nostoIlmoite").innerHTML = "Virhe: Yritit nostaa enemmän rahaa kuin sinulla"
-                    } else {
-                        if(nosto == 0){ // Jos yrität nostaa 0€ tulee virheilmoitus
-                            document.getElementById("nostoIlmoite").innerHTML = "Et voi nostaa 0€";
-                        } else {
-                            this.saldo -= nosto; // Vähentää saldosta nostomäärän
-                            document.getElementById("nostoIlmoite").innerHTML = "Nostit saldostasi " + nosto + "€"
-                            this.historia.push(hankiAika() + ": Nostit " + nosto + "€" + ". Saldo ennen nostoa: "+ ennenNosto  + "€. Saldo noston jälkeen: " + this.saldo+"€" + "<br>")
-                            // setInterval(() => {
-                                // document.getElementById("nostoIlmoite").innerHTML = "";
-                            // }, 5000);
-                            // Työntää historiaan päiväyksen, noston ja ennen jälkeen saldon
-                            if(updating == true){
-                                this.naytaTiedot(); // Päivittää automaattisesti jos päällä
-                            }
-                        }
-                    }
-                }
+        if (nostaTarkista(nosto) == true) {
+            this.saldo -= nosto; // Vähentää saldosta nostomäärän
+            document.getElementById("nostoIlmoite").innerHTML = "Nostit saldostasi " + nosto + "€"
+            this.historia.push(hankiAika() + ": Nostit " + nosto + "€" + ". Saldo ennen nostoa: "+ ennenNosto  + "€. Saldo noston jälkeen: " + this.saldo+"€" + "<br>")
+            // setInterval(() => {
+                // document.getElementById("nostoIlmoite").innerHTML = "";
+            // }, 5000);
+            // Työntää historiaan päiväyksen, noston ja ennen jälkeen saldon
+            if(updating == true){
+                this.naytaTiedot(); // Päivittää automaattisesti jos päällä
             }
-            
+        document.getElementById("formNosto").value = ""; // Tyhjentää input-kentän
         }
-            document.getElementById("formNosto").value = ""; // Tyhjentää input-kentän
         } else { // Jos tilinumeroa ei ole annettu
             document.getElementById("tilitiedot").innerHTML = "Syötä tilinumerosi";
             document.getElementById("formNosto").value = ""; // Tyhjentää input kentän
         }
     }
+    nostaTarkista(){}
     naytaTiedot(x) {
         var buttonNayta = document.getElementById("buttonNayta").classList;
         var buttonPiilota = document.getElementById("buttonPiilota").classList;
@@ -146,6 +110,56 @@ class Valid extends Pankki{
             return false
         }
     }
+    nostaTarkista(nosto){
+        if(isNaN(nosto) == true){ // Jos sisältää kirjaimia
+            document.getElementById("nostoIlmoite").innerHTML = "Virhe: Syötä vain numeroita"
+            document.getElementById("formNosto").value = ""; // Tyhjentää input kentän
+            return false;
+        }else {
+            if(this.saldo + nosto <0 || nosto < -1){ // Katsoo meneekö miinukselle
+                document.getElementById("nostoIlmoite").innerHTML = "Virhe: Et voi nostaa miinuksella"
+                return false;
+            } else {
+                if(this.saldo == 0){ // Jos yrität nostaa ja saldo == 0, et voi
+                    document.getElementById("nostoIlmoite").innerHTML = "Virhe: Saldosi on tyhjä"
+                    return false;
+                } else {
+                    var ennenNosto = this.saldo; // Ottaa ennen nostoa olevan saldoluvun
+                    if(this.saldo - nosto <= -1){ // Jos saldo-nosto on -1 tai alle, tulee virheilmoitus
+                        document.getElementById("nostoIlmoite").innerHTML = "Virhe: Yritit nostaa enemmän rahaa kuin sinulla"
+                        return false;
+                    } else {
+                        if(nosto == 0){ // Jos yrität nostaa 0€ tulee virheilmoitus
+                            document.getElementById("nostoIlmoite").innerHTML = "Et voi nostaa 0€";
+                            return false;
+                        } else {
+                            return true;
+                        }}}}}
+    }
+    talletaTarkista(tallete){
+        if(isNaN(tallete) == true){ // Jos sisältää kirjaimia
+            document.getElementById("talleteIlmoite").innerHTML = "Virhe: Syötä vain numeroita"
+            document.getElementById("formTallete").value = "";
+            return false;
+        } else {
+            if(this.saldo + tallete <0){ // Katsoo meneekö miinukselle
+                document.getElementById("talleteIlmoite").innerHTML = "Virhe: Et voi nostaa miinuksella"
+                return false;
+            }else{
+                if(tallete < -1){
+                    document.getElementById("talleteIlmoite").innerHTML = "Syötä vain positiivisia lukuja"
+                    return false;
+                } else {
+                    if(tallete == 0){ // Jos ei talleta mitään
+                        document.getElementById("talleteIlmoite").innerHTML = "Et voi tallettaa 0€"
+                        return false;
+                    } else{
+                        return true;
+                    }
+                }
+            }
+    }
+}
 }
 
 
