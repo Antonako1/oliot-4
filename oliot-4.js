@@ -351,8 +351,8 @@ class Pankki {
 
 
 class Valid extends Pankki{
-    constructor(tilinumero, saldo, historia){
-        super(tilinumero, saldo, historia);
+    constructor(tilinumero, saldo, historia, korkoProsentti, korko, luottoraja, laina, lainaaJaljella, nettoTulot, lainaEnnen, luottoprosentti, korkoPlusLainaClassGlobal){
+        super(tilinumero, saldo, historia, korkoProsentti, korko, luottoraja, laina, lainaaJaljella, nettoTulot, lainaEnnen, luottoprosentti, korkoPlusLainaClassGlobal);
     }
     checkValidity(tilinNumero){
         var regex = /[A-Z]{2}\d{2} ?\d{4} ?\d{4} ?\d{4} ?\d{2} ?[\d]{0,0}/; // Suomalaisille IBAN-tunnuksille regex
@@ -363,6 +363,7 @@ class Valid extends Pankki{
         }
     }
     talletaTarkista(tallete){
+        console.log("o");
         if(isNaN(tallete) == true){ // Jos sisältää kirjaimia
             document.getElementById("talleteIlmoite").innerHTML = "Virhe: Syötä vain numeroita"
             document.getElementById("formTallete").value = "";
