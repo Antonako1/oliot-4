@@ -37,15 +37,18 @@ class Pankki {
         if(tilitehty == true){ // Jos tilinumero on annettu
             var ennenTallete = this.saldo; // Ottaa ennen talletusta olevan saldon
             var tallete = Number(document.getElementsByClassName("talletus")[0].value) // Ottaa Inputista arvot
-            if(this.talletaTarkista(tallete) == true){
-                this.saldo += tallete; // Saldoon lisätään tallete
-                document.getElementById("talleteIlmoite").innerHTML = "Talletit saldoosi " + tallete + "€"
-                this.historia.push(hankiAika() + ": Talletit " + tallete + "€" + ". Saldo ennen talletusta: "+ ennenTallete +"€. Saldo talletuksen jälkeen: " + this.saldo +"€"+"<br>")
-                document.getElementById("formTallete").value = ""; // Tyhjentää input-kentän
-                    if(updating == true){
-                        this.naytaTiedot(); // Päivittää itse jos päällä
-                    }
-            }
+            if(this.talletaTarkista(tallete) == true)
+                        this.saldo += tallete; // Saldoon lisätään tallete
+                        document.getElementById("talleteIlmoite").innerHTML = "Talletit saldoosi " + tallete + "€"
+                        this.historia.push(hankiAika() + ": Talletit " + tallete + "€" + ". Saldo ennen talletusta: "+ ennenTallete +"€. Saldo talletuksen jälkeen: " + this.saldo +"€"+"<br>")
+                        // setInterval(() => {
+                        //     document.getElementById("talleteIlmoite").innerHTML = "";
+                        // }, 5000);
+                        // Työntää historiaan päiväyksen, talletuksen ja ennen jälkeen saldon
+                        document.getElementById("formTallete").value = ""; // Tyhjentää input-kentän
+                            if(updating == true){
+                                this.naytaTiedot(); // Päivittää itse jos päällä
+                            }
         } else { // Jos tilinumeroa ei ole annettu
             document.getElementById("tilitiedot").innerHTML = "Syötä tilinumerosi";
             document.getElementById("formTallete").value = "";
@@ -362,6 +365,10 @@ class Valid extends Pankki{
             return false
         }
     }
+    
+    nostaTarkista(){
+        
+    }
     talletaTarkista(tallete){
         if(isNaN(tallete) == true){ // Jos sisältää kirjaimia
             document.getElementById("talleteIlmoite").innerHTML = "Virhe: Syötä vain numeroita"
@@ -381,15 +388,12 @@ class Valid extends Pankki{
                         return false;
                     } else{
                         return true;
+                        console.log("1");
                     }
                 }
             }
     }
 }
-
-    nostaTarkista(){
-
-    }
 }
 
 
