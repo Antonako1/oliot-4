@@ -370,10 +370,6 @@ class Pankki {
         
     }
 }
-
-
-
-
 class Valid extends Pankki{
     constructor(tilinumero, saldo, historia, korkoProsentti, korko, luottoraja, laina, lainaaJaljella, nettoTulot, lainaEnnen, luottoprosentti, korkoPlusLainaClassGlobal){
         super(tilinumero, saldo, historia, korkoProsentti, korko, luottoraja, laina, lainaaJaljella, nettoTulot, lainaEnnen, luottoprosentti, korkoPlusLainaClassGlobal);
@@ -387,7 +383,6 @@ class Valid extends Pankki{
         }
     }
 }
-
 
 
 var pankkiTili = new Valid(undefined, 0, []);
