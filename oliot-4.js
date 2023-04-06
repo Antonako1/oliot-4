@@ -289,20 +289,25 @@ class Pankki {
             if(netostaTiedot == false){  // parametreillä lähetetty false tarkistaa painettiinko nettotulo nappia, vai luottonappia
                 document.getElementById("luottoTeksti").innerHTML = "Voit ottaa luottoa:" + 0 + "€ - " + maxLuotto +"€";
             }else{ // jos painettiin luottonappia
-                // lasketaan luotto prosentteina
-                otettuKorkoProsentti = luottoSumma * 25 / maxLuotto;
-                this.luottoprosentti = otettuKorkoProsentti
-                console.log(this.luottoprosentti);
+                if(luottoSumma > maxLuotto){
+                    document.getElementById("nettoTeksti").innerHTML = "Et voi ottaa enempää lainaa kuin: " + maxLuotto + "€";
+                } else {
+                    // lasketaan luotto prosentteina
+                    otettuKorkoProsentti = luottoSumma * 25 / maxLuotto;
+                    this.luottoprosentti = otettuKorkoProsentti
+                    console.log(this.luottoprosentti);
+    
+                    // antaa luottorajalle luottosumman
+                    this.luottoraja = luottoSumma;
+                    
+                    this.historia.push(hankiAika() +  ": Otit luottoa: " + luottoSumma + "€.")
+    
+                    if(updating == true){
+                        this.naytaTiedot(); // Päivittää itse jos päällä
+                    }
+                    document.getElementById("luottoMaara").value = "";
 
-                // antaa luottorajalle luottosumman
-                this.luottoraja = luottoSumma;
-                
-                this.historia.push(hankiAika() +  ": Otit luottoa: " + luottoSumma + "€.")
-
-                if(updating == true){
-                    this.naytaTiedot(); // Päivittää itse jos päällä
                 }
-                document.getElementById("luottoMaara").value = "";
             }
 
         }else{
