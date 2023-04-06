@@ -289,6 +289,7 @@ class Pankki {
             if(netostaTiedot == false){  // parametreillä lähetetty false tarkistaa painettiinko nettotulo nappia, vai luottonappia
                 document.getElementById("luottoTeksti").innerHTML = "Voit ottaa luottoa:" + 0 + "€ - " + maxLuotto +"€";
             }else{ // jos painettiin luottonappia
+                // Jos otat luottoa enemmän kuin saat
                 if(luottoSumma > maxLuotto){
                     document.getElementById("nettoTeksti").innerHTML = "Et voi ottaa enempää lainaa kuin: " + maxLuotto + "€";
                 } else {
